@@ -37,7 +37,7 @@ else {
                     .then((sauce) => { res.status(200).json({ message: 'Like supprimé !' }) })
                     .catch(error => res.status(400).json({ error }))
             } else if (sauce.usersDisliked.includes(req.body.userId)) {
-                Sauce.updateOne({ _id: req.params.id }, { $pull: { usersDisliked: req.body.userId }, $inc: {unlikes:-1} })
+                Sauce.updateOne({ _id: req.params.id }, { $pull: { usersDisliked: req.body.userId }, $inc: {dislikes:-1} })
                     .then((sauce) => { res.status(200).json({ message: 'Dislike supprimé !' }) })
                     .catch(error => res.status(400).json({ error }))
             }
