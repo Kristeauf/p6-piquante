@@ -6,16 +6,14 @@ const userRoutes = require('./routes/user');
 const path = require('path');
 const bodyParser = require('body-Parser');
 require('dotenv').config()
+ const helmet = require('helmet')
 
-let yourUserName = process.env.YOUR_USER_NAME
-let yourSecretCode = process.env.USERPASS
-let yourCluster = process.env.CLUSTER
-mongoose.connect(`mongodb+srv://${yourUserName}:${yourSecretCode}@${yourCluster}.mongodb.net/cluster0?retryWrites=true&w=majority`,
+mongoose.connect(`mongodb+srv://${process.env.YOUR_USER_NAME}:${process.env.USERPASS}@${process.env.CLUSTER}.mongodb.net/cluster0?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
+ app.use(helmet({crossOriginRessourcePolicy: false,}))
 app.use(express.json())
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
