@@ -14,6 +14,7 @@
     "dotenv": "^16.0.0",
     "expess": "^0.0.1-security",
     "express": "^4.17.3",
+    "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "ls": "^0.2.1",
     "mongoose": "^6.2.9",

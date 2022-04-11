@@ -13,7 +13,7 @@ mongoose.connect(`mongodb+srv://${process.env.YOUR_USER_NAME}:${process.env.USER
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
- app.use(helmet({crossOriginRessourcePolicy: false,}))
+app.use(helmet({crossOriginResourcePolicy:false,}))
 app.use(express.json())
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
