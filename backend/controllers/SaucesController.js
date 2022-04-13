@@ -73,11 +73,11 @@ exports.modifySauce = (req, res, next) => {
     Sauce.findOne({
       _id: req.params.id
     }).then((sauce) => {
-      if (sauce.userId !== req.auth.userId) {
-        res.status(401).json({
-          error: new Error("Unauthorized request!"),
-        });
-      }
+      // if (sauce.userId !== req.auth.userId) {
+      //   res.status(401).json({
+      //     error: new Error("Unauthorized request!"),
+      //   });
+      // }
       // On supprime l'ancienne image du serveur
       const filename = sauce.imageUrl.split('/images/')[1]
       fs.unlinkSync(`images/${filename}`)
@@ -116,11 +116,11 @@ exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       
-      if (sauce.userId !== req.auth.userId) {
-        res.status(401).json({
-          error: new Error("Unauthorized request!"),
-        });
-      }
+      // if (sauce.userId !== req.auth.userId) {
+      //   res.status(401).json({
+      //     error: new Error("Unauthorized request!"),
+      //   });
+      // }
       const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
         Sauce.deleteOne({ _id: req.params.id }).then(() => {
