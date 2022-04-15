@@ -3,7 +3,7 @@ const router = express.Router();
 const sauceCtrl = require("../controllers/SaucesController");
 const auth = require("../middleware/auth");
 const multer = require("../middleware/multer-config");
-const isown = require("../middleware/isOwn")
+const isown = require("../middleware/isown")
  router.post("/", auth,  multer, sauceCtrl.createSauce,); 
  router.post('/:id/like', auth, sauceCtrl.likeOrDislike)
 router.get("/", auth, sauceCtrl.getAllSauces);
