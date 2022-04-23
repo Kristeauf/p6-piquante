@@ -20,8 +20,9 @@ const jwt = require('jsonwebtoken')
 exports.login = (req, res, next) => {
     User.findOne({email:req.body.email})
     .then(user=>{
-        if(!User){
-            return res.status(401).json({error:'utilisateur introuvable'})
+        console.log(user);
+        if(!user){
+            return res.status(403).json({error:'utilisateur introuvable'})
         }
         bcrypt.compare(req.body.password,user.password)
         .then(valid=>{
