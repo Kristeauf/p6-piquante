@@ -19,7 +19,7 @@ exports.createSauce = (req, res, next) => {
 exports.likeOrDislike = (req, res, next) => {
 
   if (req.body.like === 1) {
-    Sauce.updateOne({ _id: req.params.id }, { $inc: { likes:1 }, $push: { usersLiked: req.body.userId } })
+    Sauce.updateOne({ _id: req.params.id }, { $inc: { likes: 1 }, $push: { usersLiked: req.body.userId } })
       .then((sauce) => res.status(200).json({ message: 'Like ajouté !' }))
       .catch(error => res.status(400).json({ error }))
   } else if (req.body.like === -1) {
@@ -73,44 +73,43 @@ exports.modifySauce = (req, res, next) => {
     Sauce.findOne({
       _id: req.params.id
     }).then((sauce) => {
-       if (sauce.userId !== req.auth.userId) {
+      if (sauce.userId !== req.auth.userId) {
         res.status(401).json({
-           error: new Error("Unauthorized request!"),
-         });
-       }
-    // On supprime l'ancienne image du serveur
+          error: new Error("Unauthorized request!"),
+        });
+      }
+      // On supprime l'ancienne image du serveur
       const filename = sauce.imageUrl.split('/images/')[1]
       fs.unlinkSync(`images/${filename}`)
     }),
     sauceObject = {
       // On modifie les données et on ajoute la nouvelle image
       ...JSON.parse(req.body.sauce),
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${
-        req.file.filename
-      }`,
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename
+        }`,
     }
-  ) : ( 
+  ) : (
     // Si la modification ne contient pas de nouvelle image
-    sauceObject = 
-      {
-        name: req.body.name,
-        manufacturer: req.body.manufacturer,
-        description: req.body.description,
-        mainPepper: req.body.mainPepper,
-        heat: req.body.heat,
-        userId: req.body.userId,
-      
+    sauceObject =
+    {
+      name: req.body.name,
+      manufacturer: req.body.manufacturer,
+      description: req.body.description,
+      mainPepper: req.body.mainPepper,
+      heat: req.body.heat,
+      userId: req.body.userId,
+
     }
   )
   Sauce.updateOne(
-      // On applique les paramètre de sauceObject
-      {
-        _id: req.params.id
-      }, {
-        ...sauceObject,
-        _id: req.params.id
-      }
-    )
+    // On applique les paramètre de sauceObject
+    {
+      _id: req.params.id
+    }, {
+    ...sauceObject,
+    _id: req.params.id
+  }
+  )
     .then(() => res.status(200).json({
       message: 'Sauce modifiée !'
     }))
@@ -122,8 +121,8 @@ exports.modifySauce = (req, res, next) => {
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-      
-    
+
+
       const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
         Sauce.deleteOne({ _id: req.params.id }).then(() => {
