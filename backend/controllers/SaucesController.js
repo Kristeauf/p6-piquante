@@ -3,7 +3,7 @@ const fs = require("fs");
 
 
 exports.createSauce = (req, res, next) => {
-  console.log(req.body.sauce);
+ 
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
   const newSauce = new Sauce({
@@ -74,7 +74,7 @@ exports.modifySauce = (req, res, next) => {
       _id: req.params.id
     }).then((sauce) => {
       if (sauce.userId !== req.auth.userId) {
-        res.status(401).json({
+        res.status(403).json({
           error: new Error("Unauthorized request!"),
         });
       }
@@ -121,7 +121,11 @@ exports.modifySauce = (req, res, next) => {
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-
+      if (sauce.userId !== req.auth.userId) {
+        res.status(403).json({
+          error: new Error("forbidden request"),
+        });
+      }
 
       const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
